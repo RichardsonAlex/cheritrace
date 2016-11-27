@@ -8,7 +8,7 @@ foreach(TOOL_SOURCE ${TOOLS})
 	set_target_properties(cheri-${TOOL} PROPERTIES
 		INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}"
 	)
-	target_link_libraries(cheri-${TOOL} cheritrace)
+	target_link_libraries(cheri-${TOOL} cheritrace-static)
 	install (TARGETS cheri-${TOOL} DESTINATION bin)
 endforeach()
 

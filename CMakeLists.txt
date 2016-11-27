@@ -4,6 +4,17 @@ project(cheritrace)
 
 set(cheritrace_VERSION 0.1)
 
+if(NOT CMAKE_INSTALL_LIBDIR)
+	set(CMAKE_INSTALL_LIBDIR lib)
+endif()
+# the RPATH to be used when installing, but only if it's not a system directory
+list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" isSystemDir)
+if("${isSystemDir}" STREQUAL "-1")
+	set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+endif()
+SET(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 file(GLOB cheritrace_CXX_SRCS "*.cc")
 file(GLOB cheritrace_HDRS "*.hh")
 set(LLVM_LIBS
@@ -50,6 +61,7 @@ FIND_PACKAGE(LibLZMA REQUIRED)
 include_directories(SYSTEM ${LibLZMA_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LLVM_CXXFLAGS} ${LLVM_VERSION}")
 target_link_libraries(cheritrace ${LLVM_LDFLAGS} ${LLVM_LIBS_FLAGS} ${LLVM_SYSTEMLIBS} ${LIBLZMA_LIBRARIES})
+target_link_libraries(cheritrace-static ${LLVM_LDFLAGS} ${LLVM_LIBS_FLAGS} ${LLVM_SYSTEMLIBS} ${LIBLZMA_LIBRARIES})
 set(CMAKE_SKIP_RPATH true)
 
 
